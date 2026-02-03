@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path 
 from . import views
+from django.urls import include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,6 +28,10 @@ urlpatterns = [
     path("recipe/",views.recipe),
     path("teams/",views.teams,name ="teams"),
     path("marks/",views.marks),
+
+    #app level utl  config
+
+    path("student/",include("student.urls")),
 ]
 
 

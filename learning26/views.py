@@ -30,7 +30,7 @@ def recipe(request):
 def teams(request):
     playerlist=["Ms dhoni", "shivam dube","raina",]
     data= {
-        "teamname":"CSK","captain":"MS DHONI", "playerlist":playerlist,"trophy":"5",  
+        "teamname":"CSK","captain":"MS DHONI", "playerlist":playerlist,"trophy":4,  
     }
     return render(request,"teams.html",data)
 

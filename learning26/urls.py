@@ -32,6 +32,7 @@ urlpatterns = [
     #app level utl  config
 
     path("student/",include("student.urls")),
+    path("employee/",include("Employee.urls")),
 ]
 
 

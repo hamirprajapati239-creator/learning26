@@ -1,14 +1,14 @@
 from django import forms 
-from.models import Employee,Course
+from .models import Employee,Course
 
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
-        model=Employee
-        fields='_all_'\
+        model = Employee
+        fields='__all__'
         
-class CourseForm(forms.Modelform):
+class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields= '_all_'
+        fields= '__all__'
 

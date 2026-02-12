@@ -1,13 +1,15 @@
 from django.shortcuts import render,HttpResponse
 from .models import Employee
 from.forms import EmployeeForm,CourseForm
+from django.shortcuts import redirect
+
 
 def employeelist(request):
 
-    employees= Employee.objects.all().values()
-
-    print(employees)
-    return render(request,'employee/employeelist.html',{'employee':employees})
+    employee= Employee.objects.all().values()
+    
+    print(employee)
+    return render(request,'employee/employeelist.html',{'employee':employee})
 
 def employeeFilter(request):
      #where select  from employee where name = "raj"
@@ -15,11 +17,11 @@ def employeeFilter(request):
      #selet  from employee where post = "Developer"
     employee2= Employee.objects.filter(post='Developer').values()
     #select  from employee where name = "raj" and post = "Developer"
-    employee3 =Employee.objects.filter1(name="raja",post="Developer").values()
+    employee3 =Employee.objects.filter(name="raja",post="Developer").values()
      #select  from employee where name = "raj" or post = "Developer"
 
 
-    employee4 = Employee.objects.filter(age_gt=23).values()
+    employee4 = Employee.objects.filter(age__gt=23).values()
     employee5 = Employee.objects.filter(age__gte=23).values()
 
 
@@ -29,10 +31,10 @@ def employeeFilter(request):
     employee8= Employee.objects.filter(name__contains="r").values()
     employee9= Employee.objects.filter(name__icontains="R").values()
 
-    employee10=Employee.objects.filter(name__starwith="R").values()
+    employee10=Employee.objects.filter(name__startswith="R").values()
     employee11= Employee.objects.filter(name__endswith="R").values()
-    employee12=Employee.objects.filter(name__isstartswith="R").values()
-    employee13=Employee.objects.filter(name__iendwith="R").values()
+    employee12=Employee.objects.filter(name__istartswith="R").values()
+    employee13=Employee.objects.filter(name__iendswith="R").values()
 
 
     employee14= Employee.objects.filter(name__in=["raj","jay"]).values()
@@ -72,10 +74,10 @@ def createEmployeeWithForm(request):
     if request.method =="POST":
         form = EmployeeForm(request.POST)
         form.save()
-        return HttpResponse("Employee Creted....")
+        return redirect("employeelist")
     else:
         form=EmployeeForm()
-        return render(request,"employee/createEmployeeForm.html",{"form":form})
+        return render(request,"employee/createEmployeeWithForm.html",{"form":form})
 
 def createCourse(request):
     if request.method == "POST":
@@ -86,18 +88,27 @@ def createCourse(request):
         form=CourseForm()
         return render(request,"employee/createCourse.html",{"form":form})
 
-def createstudent(request):
-    if request.method =="POST":
-        form=studentForm(request.POST)
-        form.save()
-        return HttpResponse(request,"employee/createstudent.html",{"form":form})
-    else :
-        form=createstudent()
-        return render(request,"employee/createstudent.html",{"form":form})
+def deleteEmployee(request,id):
 
-def createbook(request):
-    if request.method =='POST':
-        form=bookform(request.POST)
-        form.save()
-        return HttpResponse(request,"employee/createbook.html",{"form":form})
+    print("id from url =",id)
+    Employee.objects.filter(id=id).delete()
+
+    return redirect("employeelist")
+
+def filterEmployee(request):
+    print("filter employee called")
+    employee =Employee.objects.filter(age__gte=25).values()
+    print("filter employee =",employee)
+
+    return render(request,"employee/employeelist.html",{"employee":employee})
+
+def sortemployees(request,id):
+    if id == 1:
+        employee = Employee.objects.all().order_by('age').values()
+    elif id == 2:
+        employee = Employee.objects.all().order_by('-age').values()
+    else :
+        employee = Employee.objects.all().values()
+ 
+    return render(request,'employee/employeelist.html',{'employee': employee})
     
